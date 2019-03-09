@@ -41,6 +41,8 @@ var random1 = Math.floor(Math.random() * allPics.length);
 busMall1.src = allPics[random1].filepath;
 busMall1.alt = allPics[random1].name;
 busMall1.title = allPics[random1].name;
+busMall1.stlye.height = "300px";
+busMall1.style.width = "320px";
 allPics[random1].views++;
 
 var random2 = Math.floor(Math.random() * allPics.length);
@@ -50,6 +52,8 @@ while (random2 === random1) {
 busMall2.src = allPics[random2].filepath;
 busMall2.alt = allPics[random2].name;
 busMall2.title = allPics[random2].name;
+busMall2.stlye.height = "300px";
+busMall2.style.width = "320px";
 allPics[random2].views++;
 
 var random3 = Math.floor(Math.random() * allPics.length);
@@ -59,6 +63,8 @@ while (random2 === random1 && random3 === random2) {
 busMall3.src = allPics[random3].filepath;
 busMall3.alt = allPics[random3].name;
 busMall3.title = allPics[random3].name;
+busMall3.stlye.height = "300px";
+busMall3.style.width = "320px";
 allPics[random3].views++;
 };
 
