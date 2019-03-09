@@ -1,80 +1,158 @@
 'use strict';
 console.log('script loaded');
 
-var busMall1 = document.getElementById('busmall1');
-var busMall2 = document.getElementById('busmall2');
-var busMall3 = document.getElementById('busmall3');
+var picOne = document.getElementById('picOne');
+var picTwo = document.getElementById('picTwo');
+var picThree = document.getElementById('picThree');
+var resultsTable = document.getElementById('resultsTable');
 
-var allPics = [];
+var imgs = [];
+var picCount = 0;
 
-function MallPics(name, type) {
-  this.filepath = `images/${name}${type}`;
+function BusMallPictures(name, displayName) {
   this.name = name;
-  this.type = type;
+  this.displayName = displayName;
+  this.filepath = `images/${name}`;
   this.views = 0;
-  allPics.push(this);
+  this.clicks = 0;
+
+  imgs.push(this);
 }
 
-new MallPics('bag', '.jpg');
-new MallPics('banana', '.jpg');
-new MallPics('bathroom', '.jpg');
-new MallPics('boots', '.jpg');
-new MallPics('breakfast', '.jpg');
-new MallPics('bubblegum', '.jpg');
-new MallPics('chair', '.jpg');
-new MallPics('cthulhu', '.jpg');
-new MallPics('dog-duck', '.jpg');
-new MallPics('dragon', '.jpg');
-new MallPics('pen', '.jpg');
-new MallPics('pet-sweep', '.jpg');
-new MallPics('scissors', '.jpg');
-new MallPics('shark', '.jpg');
-new MallPics('sweep', '.png');
-new MallPics('tauntaun', '.jpg');
-new MallPics('unicorn', '.jpg');
-new MallPics('usb', '.gif');
-new MallPics('water-can', '.jpg');
-new MallPics('wine-glass', '.jpg');
+new BusMallPictures('bag.jpg', 'Bag');
+new BusMallPictures('banana.jpg', 'Banana');
+new BusMallPictures('bathroom.jpg', 'Bathroom');
+new BusMallPictures('boots.jpg', 'Boots');
+new BusMallPictures('breakfast.jpg', 'Breakfast');
+new BusMallPictures('bubblegum.jpg', 'Bubblegum');
+new BusMallPictures('chair.jpg', 'Chair');
+new BusMallPictures('cthulhu.jpg', 'Cthulhu');
+new BusMallPictures('dog-duck.jpg', 'Dog Duck');
+new BusMallPictures('dragon.jpg', 'Dragon');
+new BusMallPictures('pen.jpg', 'Pen');
+new BusMallPictures('pet-sweep.jpg', 'Pet Sweep');
+new BusMallPictures('scissors.jpg', 'Scissors');
+new BusMallPictures('shark.jpg', 'Shark');
+new BusMallPictures('sweep.png', 'Sweep');
+new BusMallPictures('tauntaun.jpg', 'Taun Taun');
+new BusMallPictures('unicorn.jpg', 'Unicorn');
+new BusMallPictures('usb.gif', 'USB');
+new BusMallPictures('water-can.jpg', 'Water Can');
+new BusMallPictures('wine-glass.jpg', 'Wine Glass');
 
-function showRandomPic() {
-var random1 = Math.floor(Math.random() * allPics.length);
-busMall1.src = allPics[random1].filepath;
-busMall1.alt = allPics[random1].name;
-busMall1.title = allPics[random1].name;
-busMall1.stlye.height = "300px";
-busMall1.style.width = "320px";
-allPics[random1].views++;
+function choosePictures() {
+  var currentPictures = [];
+  do {
+    do {
+      var randomNumber = Math.floor(Math.random() * imgs.length);
+      var picture = imgs[randomNumber];
+    } while (previousPictures.includes(picture) || currentPictures.includes(picture));
+    currentPictures.push(picture);
+  } while (currentPictures.length < 3);
 
-var random2 = Math.floor(Math.random() * allPics.length);
-while (random2 === random1) {
-  random2 = Math.floor(Math.random()*allPics.length);
+  return currentPictures;
 }
-busMall2.src = allPics[random2].filepath;
-busMall2.alt = allPics[random2].name;
-busMall2.title = allPics[random2].name;
-busMall2.stlye.height = "300px";
-busMall2.style.width = "320px";
-allPics[random2].views++;
 
-var random3 = Math.floor(Math.random() * allPics.length);
-while (random2 === random1 && random3 === random2) {
-  random2 = Math.floor(Math.random()*allPics.length);
+var previousPictures = [];
+oneTurn();
+
+function oneTurn() {
+  var currentPictures = choosePictures();
+  render(currentPictures);
+
+  for (var i = 0; i < 3; i++) {
+    currentPictures[i].views++;
+  }
+
+  previousPictures = currentPictures;
+
+  picCount += 1;
 }
-busMall3.src = allPics[random3].filepath;
-busMall3.alt = allPics[random3].name;
-busMall3.title = allPics[random3].name;
-busMall3.stlye.height = "300px";
-busMall3.style.width = "320px";
-allPics[random3].views++;
-};
 
-showRandomPic();
+function render(currentPictures) {
+  picOne.src = currentPictures[0].filepath;
+  picOne.style.height = "300px";
+  picOne.style.width = "320px";
+  picOne.title = currentPictures[0].displayName;
 
-busMall1.addEventListener('click', handleClick);
-busMall2.addEventListener('click', handleClick);
-busMall3.addEventListener('click', handleClick);
+  picTwo.src = currentPictures[1].filepath;
+  picTwo.style.height = "300px";
+  picTwo.style.width = "320px";
+  picTwo.title = currentPictures[1].displayName;
+
+  picThree.src = currentPictures[2].filepath;
+  picThree.style.height = "300px";
+  picThree.style.width = "320px";
+  picThree.title = currentPictures[2].displayName;
+
+  picOne.addEventListener('click', handleClick);
+  picTwo.addEventListener('click', handleClick);
+  picThree.addEventListener('click', handleClick);
+}
 
 function handleClick(event) {
-  console.log('target, ', event.target);
-  showRandomPic();
+  if (picCount < 26) {
+    increaseClickCount(event.target.title);
+    oneTurn();
+  } else if (picCount === 26) {
+    createTable();
+    picCount++;
+  } else {
+    return;
+  }
+}
+
+function increaseClickCount(title) {
+  for (var i = 0; i < imgs.length; i++) {
+    if (imgs[i].displayName === title) {
+      imgs[i].clicks++;
+      break;
+    }
+  }
+}
+
+function createTable() {
+  var row = document.createElement('tr');
+  var headerName = document.createElement('td');
+  headerName.innerText = 'Item Name';
+  row.appendChild(headerName);
+
+  var headerTotalViews = document.createElement('td');
+  headerTotalViews.innerText = 'Times Displayed';
+  row.appendChild(headerTotalViews);
+
+  var headerTotalClicks = document.createElement('td');
+  headerTotalClicks.innerText = 'Total Clicks';
+  row.appendChild(headerTotalClicks);
+
+  var headerPercentClicked = document.createElement('td');
+  headerPercentClicked.innerText = 'Percent Clicked';
+  row.appendChild(headerPercentClicked);
+
+  resultsTable.appendChild(row);
+
+  for (var i = 0; i < imgs.length; i++) {
+    var imgRow = document.createElement('tr');
+    var nameData = document.createElement('td');
+    nameData.innerText = imgs[i].displayName;
+    imgRow.appendChild(nameData);
+
+    var totalViewsData = document.createElement('td');
+    totalViewsData.innerText = imgs[i].views;
+    imgRow.appendChild(totalViewsData);
+
+    var totalClicksData = document.createElement('td');
+    totalClicksData.innerText = imgs[i].clicks;
+    imgRow.appendChild(totalClicksData);
+
+    var totalPercentClicked = document.createElement('td');
+    var percentage = (Math.floor((imgs[i].clicks / imgs[i].views) * 100));
+    if (isNaN (percentage)) {
+      percentage = 0;
+    }
+    totalPercentClicked.innerText = (percentage + '%');
+    imgRow.appendChild(totalPercentClicked);
+
+    resultsTable.appendChild(imgRow);
+  }
 }
