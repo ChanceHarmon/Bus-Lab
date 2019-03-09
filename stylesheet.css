@@ -1,0 +1,22 @@
+body {
+background-color: cyan;
+margin-left: 55px;;
+}
+header {
+  color: yellow;
+  position: relative;
+}
+
+h1{
+  font-size: 50px;
+  margin-bottom: 30px;
+}
+p {
+  font-size: 25px;
+  font-family: Tahoma;
+  color: white;
+  margin-bottom: 30px;
+  border-color: rebeccapurple;
+  border-width: 5px;
+
+}
