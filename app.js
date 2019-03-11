@@ -8,6 +8,9 @@ var resultsTable = document.getElementById('resultsTable');
 
 var imgs = [];
 var picCount = 0;
+var dataChart;
+var chartDrawn = false;
+
 
 function BusMallPictures(name, displayName) {
   this.name = name;
@@ -155,4 +158,37 @@ function createTable() {
 
     resultsTable.appendChild(imgRow);
   }
-}
+  function updateChartArrays() {
+    for (var i =0; i < imgs.length; i++) {
+      displayName = imgs[i].displayName;
+      clicks = imgs[i].clicks;
+      }
+    }
+    var data = {
+      labels: imgs.displayName,
+      datasets: [
+        {
+          data: imgs.clicks,
+          backgroundColor: [
+            'rgba(255, 99, 132, 0.2)',
+            'rgba(54, 162, 235, 0.2)',
+            'rgba(255, 206, 86, 0.2)',
+            'rgba(75, 192, 192, 0.2)',
+            'rgba(153, 102, 255, 0.2)',
+            'rgba(255, 159, 64, 0.2)'
+        ]
+        }
+      ]
+    };
+    
+    function drawChart() {
+      var ctx = document.getElementById("myChart").getContext('2d');
+      dataChart = new Chart(ctx, {
+        type: 'bar',
+        data: data,
+      });
+      chartDrawn = true;  
+};
+
+drawChart();
+};
