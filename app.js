@@ -10,6 +10,8 @@ var imgs = [];
 var picCount = 0;
 var dataChart;
 var chartDrawn = false;
+var displayName = [];
+var clicks = [];
 
 
 function BusMallPictures(name, displayName) {
@@ -22,6 +24,12 @@ function BusMallPictures(name, displayName) {
   imgs.push(this);
 }
 
+function updateChartArrays() {
+  for (var i =0; i < imgs.length; i++) {
+    displayName[i] = imgs[i].displayName;
+    clicks[i] = imgs[i].clicks;
+    }
+  }
 new BusMallPictures('bag.jpg', 'Bag');
 new BusMallPictures('banana.jpg', 'Banana');
 new BusMallPictures('bathroom.jpg', 'Bathroom');
@@ -70,6 +78,7 @@ function oneTurn() {
   previousPictures = currentPictures;
 
   picCount += 1;
+  updateChartArrays();
 }
 
 function render(currentPictures) {
@@ -103,6 +112,7 @@ function handleClick(event) {
   } else {
     return;
   }
+  updateChartArrays();
 }
 
 function increaseClickCount(title) {
@@ -112,6 +122,7 @@ function increaseClickCount(title) {
       break;
     }
   }
+ 
 }
 
 function createTable() {
@@ -158,24 +169,31 @@ function createTable() {
 
     resultsTable.appendChild(imgRow);
   }
-  function updateChartArrays() {
-    for (var i =0; i < imgs.length; i++) {
-      displayName = imgs[i].displayName;
-      clicks = imgs[i].clicks;
-      }
-    }
+
     var data = {
-      labels: imgs.displayName,
+      labels: displayName,
       datasets: [
         {
-          data: imgs.clicks,
+          data: clicks,
           backgroundColor: [
             'rgba(255, 99, 132, 0.2)',
             'rgba(54, 162, 235, 0.2)',
             'rgba(255, 206, 86, 0.2)',
             'rgba(75, 192, 192, 0.2)',
             'rgba(153, 102, 255, 0.2)',
-            'rgba(255, 159, 64, 0.2)'
+            'rgba(255, 159, 64, 0.2)',
+            'rgba(255, 99, 132, 0.2)',
+            'rgba(54, 162, 235, 0.2)',
+            'rgba(255, 206, 86, 0.2)',
+            'rgba(75, 192, 192, 0.2)',
+            'rgba(153, 102, 255, 0.2)',
+            'rgba(255, 159, 64, 0.2)',
+            'rgba(255, 99, 132, 0.2)',
+            'rgba(54, 162, 235, 0.2)',
+            'rgba(255, 206, 86, 0.2)',
+            'rgba(75, 192, 192, 0.2)',
+            'rgba(153, 102, 255, 0.2)',
+            'rgba(255, 159, 64, 0.2)',
         ]
         }
       ]
