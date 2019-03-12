@@ -103,13 +103,10 @@ function render(currentPictures) {
 }
 
 function localInfo() {
-  var clickString = JSON.stringify(clicks);
+  var dataString = JSON.stringify(data);
   
-  localStorage.setItem('myClicks', clickString);
-  
-  var retrievedClicks = localStorage.getItem('myClicks');
-  
-  var retrievedClicksParsed = JSON.parse(retrievedClicks);}
+  localStorage.setItem('myData', dataString);
+};
   
   function handleClick(event) {
     if (picCount < 26) {
@@ -217,8 +214,14 @@ function localInfo() {
       });
       chartDrawn = true;  
     };
+  }
+    function dataStorage() {
+    var retrievedData = localStorage.getItem('myData');
     
-    drawChart();
+    var retrievedDataParsed = JSON.parse(retrievedData);};
     
-  };
   
+    
+  drawChart();
+
+  dataStorage();  
