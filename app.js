@@ -28,8 +28,8 @@ function updateChartArrays() {
   for (var i =0; i < imgs.length; i++) {
     displayName[i] = imgs[i].displayName;
     clicks[i] = imgs[i].clicks;
-    }
   }
+}
 new BusMallPictures('bag.jpg', 'Bag');
 new BusMallPictures('banana.jpg', 'Banana');
 new BusMallPictures('bathroom.jpg', 'Bathroom');
@@ -95,6 +95,7 @@ function render(currentPictures) {
 };
 
 function handleClick(event) {
+  
   if (picCount < 26) {
     increaseClickCount(event.target.title);
     oneTurn();
@@ -104,8 +105,6 @@ function handleClick(event) {
   } else {
     return;
   }
-  updateChartArrays();
-  localInfo();
 }
 
 function increaseClickCount(title) {
@@ -163,60 +162,50 @@ function createTable() {
     
     resultsTable.appendChild(imgRow);
   }
+  updateChartArrays();
+  localInfo();
+  drawChart();
 }
+
+function drawChart() {
+
   var data = {
     labels: displayName,
-    datasets: [
-      {
-        data: clicks,
-        backgroundColor: [
-          'rgba(255, 99, 132, 0.2)',
-          'rgba(54, 162, 235, 0.2)',
-          'rgba(255, 206, 86, 0.2)',
-          'rgba(75, 192, 192, 0.2)',
-          'rgba(153, 102, 255, 0.2)',
-          'rgba(255, 159, 64, 0.2)',
-          'rgba(255, 99, 132, 0.2)',
-          'rgba(54, 162, 235, 0.2)',
-          'rgba(255, 206, 86, 0.2)',
-          'rgba(75, 192, 192, 0.2)',
-          'rgba(153, 102, 255, 0.2)',
-          'rgba(255, 159, 64, 0.2)',
-          'rgba(255, 99, 132, 0.2)',
-          'rgba(54, 162, 235, 0.2)',
-          'rgba(255, 206, 86, 0.2)',
-          'rgba(75, 192, 192, 0.2)',
-          'rgba(153, 102, 255, 0.2)',
-          'rgba(255, 159, 64, 0.2)',
-        ]
-      }
-    ]
+    datasets: [{
+      data: clicks,
+      backgroundColor:'rgba(255, 99, 132, 0.2)',
+    }]
   };
-  
-  function drawChart() {
-    var ctx = document.getElementById("myChart").getContext('2d');
-    dataChart = new Chart(ctx, {
-      type: 'bar',
-      data: data,
-    });
-    chartDrawn = true;  
-  };
-  drawChart();
+
+  var ctx = document.getElementById("myChart").getContext('2d');
+  dataChart = new Chart(ctx, {
+    type: 'bar',
+    data: data,
+  });
+  // chartDrawn = true;  
+
+}
 
 function localInfo() {
 
   localStorage.setItem('viewData', JSON.stringify(viewData));
   localStorage.setItem('clicks', JSON.stringify(clicks));
+  var retrieveClick = localStorage.getItem('clicks');
+  var clicksParse = JSON.parse(retrieveClick);
+  // var retrieveViews = localStorage.getItem('viewData');
+  // var viewsParse = JSON.parse(retrieveViews);
 
-};
-function dataStorage() {
-  var retrievedData = localStorage.getItem('myData');
-    
-    var retrievedDataParsed = JSON.parse(retrievedData);};
-    
-  
-  dataStorage();
-  console.log('clicks', clicks, 'displayname', displayName, 'imgs', imgs,);
+  if (clicksParse === null) {
+    console.log('retrieveParse', clicksParse);
+    // displayProduct();
+  }else {
+    clicks = clicksParse;
+    // views = viewsParse;
+
+  }
+}
+
+
 
 
 var viewData = [];
