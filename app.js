@@ -11,6 +11,10 @@ var dataChart;
 var chartDrawn = false;
 var displayName = [];
 var clicks = [];
+
+
+
+
 function BusMallPictures(name, displayName) {
   this.name = name;
   this.displayName = displayName;
@@ -18,6 +22,7 @@ function BusMallPictures(name, displayName) {
   this.views = 0;
   this.clicks = 0;
   imgs.push(this);
+
 }
 function updateChartArrays() {
   for (var i =0; i < imgs.length; i++) {
@@ -141,6 +146,7 @@ function createTable() {
     
     var totalViewsData = document.createElement('td');
     totalViewsData.innerText = imgs[i].views;
+    viewData[i] = imgs[i].views;
     imgRow.appendChild(totalViewsData);
     
     var totalClicksData = document.createElement('td');
@@ -198,9 +204,10 @@ function createTable() {
   drawChart();
 
 function localInfo() {
-  var dataString = JSON.stringify(data);
-  
-  localStorage.setItem('myData', dataString);
+
+  localStorage.setItem('viewData', JSON.stringify(viewData));
+  localStorage.setItem('clicks', JSON.stringify(clicks));
+
 };
 function dataStorage() {
   var retrievedData = localStorage.getItem('myData');
@@ -209,3 +216,8 @@ function dataStorage() {
     
   
   dataStorage();
+  console.log('clicks', clicks, 'displayname', displayName, 'imgs', imgs,);
+
+
+var viewData = [];
+
