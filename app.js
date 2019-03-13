@@ -1,4 +1,5 @@
 'use strict';
+// debugger;
 console.log('script loaded');
 var picOne = document.getElementById('picOne');
 var picTwo = document.getElementById('picTwo');
@@ -195,7 +196,7 @@ function createTable() {
     chartDrawn = true;  
   };
   drawChart();
-}
+
 function localInfo() {
   var dataString = JSON.stringify(data);
   
