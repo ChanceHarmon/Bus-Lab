@@ -1,4 +1,5 @@
 'use strict';
+// debugger;
 console.log('script loaded');
 var picOne = document.getElementById('picOne');
 var picTwo = document.getElementById('picTwo');
@@ -7,9 +8,13 @@ var resultsTable = document.getElementById('resultsTable');
 var imgs = [];
 var picCount = 0;
 var dataChart;
-var chartDrawn = false;
+// var chartDrawn = false; no need
 var displayName = [];
 var clicks = [];
+
+
+
+
 function BusMallPictures(name, displayName) {
   this.name = name;
   this.displayName = displayName;
@@ -17,13 +22,14 @@ function BusMallPictures(name, displayName) {
   this.views = 0;
   this.clicks = 0;
   imgs.push(this);
+
 }
 function updateChartArrays() {
   for (var i =0; i < imgs.length; i++) {
     displayName[i] = imgs[i].displayName;
     clicks[i] = imgs[i].clicks;
-    }
   }
+}
 new BusMallPictures('bag.jpg', 'Bag');
 new BusMallPictures('banana.jpg', 'Banana');
 new BusMallPictures('bathroom.jpg', 'Bathroom');
@@ -72,23 +78,24 @@ function render(currentPictures) {
   picOne.style.height = "300px";
   picOne.style.width = "320px";
   picOne.title = currentPictures[0].displayName;
-  
+
   picTwo.src = currentPictures[1].filepath;
   picTwo.style.height = "300px";
   picTwo.style.width = "320px";
   picTwo.title = currentPictures[1].displayName;
-  
+
   picThree.src = currentPictures[2].filepath;
   picThree.style.height = "300px";
   picThree.style.width = "320px";
   picThree.title = currentPictures[2].displayName;
-  
+
   picOne.addEventListener('click', handleClick);
   picTwo.addEventListener('click', handleClick);
   picThree.addEventListener('click', handleClick);
-};
+}
 
 function handleClick(event) {
+
   if (picCount < 26) {
     increaseClickCount(event.target.title);
     oneTurn();
@@ -98,8 +105,6 @@ function handleClick(event) {
   } else {
     return;
   }
-  updateChartArrays();
-  localInfo();
 }
 
 function increaseClickCount(title) {
@@ -109,7 +114,7 @@ function increaseClickCount(title) {
       break;
     }
   }
-  
+
 }
 
 function createTable() {
@@ -117,35 +122,36 @@ function createTable() {
   var headerName = document.createElement('td');
   headerName.innerText = 'Item Name';
   row.appendChild(headerName);
-  
+
   var headerTotalViews = document.createElement('td');
   headerTotalViews.innerText = 'Times Displayed';
   row.appendChild(headerTotalViews);
-  
+
   var headerTotalClicks = document.createElement('td');
   headerTotalClicks.innerText = 'Total Clicks';
   row.appendChild(headerTotalClicks);
-  
+
   var headerPercentClicked = document.createElement('td');
   headerPercentClicked.innerText = 'Percent Clicked';
   row.appendChild(headerPercentClicked);
-  
+
   resultsTable.appendChild(row);
-  
+
   for (var i = 0; i < imgs.length; i++) {
     var imgRow = document.createElement('tr');
     var nameData = document.createElement('td');
     nameData.innerText = imgs[i].displayName;
     imgRow.appendChild(nameData);
-    
+
     var totalViewsData = document.createElement('td');
     totalViewsData.innerText = imgs[i].views;
+    viewData[i] = imgs[i].views;
     imgRow.appendChild(totalViewsData);
-    
+
     var totalClicksData = document.createElement('td');
     totalClicksData.innerText = imgs[i].clicks;
     imgRow.appendChild(totalClicksData);
-    
+
     var totalPercentClicked = document.createElement('td');
     var percentage = (Math.floor((imgs[i].clicks / imgs[i].views) * 100));
     if (isNaN (percentage)) {
@@ -153,58 +159,72 @@ function createTable() {
     }
     totalPercentClicked.innerText = (percentage + '%');
     imgRow.appendChild(totalPercentClicked);
-    
+
     resultsTable.appendChild(imgRow);
   }
+  updateChartArrays();
+  localInfo();
+  
 }
+
+function drawChart() {
+
   var data = {
     labels: displayName,
-    datasets: [
-      {
-        data: clicks,
-        backgroundColor: [
-          'rgba(255, 99, 132, 0.2)',
-          'rgba(54, 162, 235, 0.2)',
-          'rgba(255, 206, 86, 0.2)',
-          'rgba(75, 192, 192, 0.2)',
-          'rgba(153, 102, 255, 0.2)',
-          'rgba(255, 159, 64, 0.2)',
-          'rgba(255, 99, 132, 0.2)',
-          'rgba(54, 162, 235, 0.2)',
-          'rgba(255, 206, 86, 0.2)',
-          'rgba(75, 192, 192, 0.2)',
-          'rgba(153, 102, 255, 0.2)',
-          'rgba(255, 159, 64, 0.2)',
-          'rgba(255, 99, 132, 0.2)',
-          'rgba(54, 162, 235, 0.2)',
-          'rgba(255, 206, 86, 0.2)',
-          'rgba(75, 192, 192, 0.2)',
-          'rgba(153, 102, 255, 0.2)',
-          'rgba(255, 159, 64, 0.2)',
-        ]
-      }
-    ]
+    datasets: [{
+      data: clicks,
+      label: 'Clicks',
+      backgroundColor:'rgba(255, 99, 132, 0.2)',
+    }]
   };
-  
-  function drawChart() {
-    var ctx = document.getElementById("myChart").getContext('2d');
-    dataChart = new Chart(ctx, {
-      type: 'bar',
-      data: data,
-    });
-    chartDrawn = true;  
+
+  var ctx = document.getElementById("myChart").getContext('2d');
+  dataChart = new Chart(ctx, {
+    type: 'bar',
+    data: data,
+  });
+  // chartDrawn = true;  don't need
+  var viewz = {
+    label: 'Views',
+    data: viewData,
+    backgroundColor: '#F7B633',
+    borderWidth: 1,
+
   };
-  drawChart();
+  data.datasets.push(viewz);
+  dataChart.update();
 }
+
 function localInfo() {
-  var dataString = JSON.stringify(data);
-  
-  localStorage.setItem('myData', dataString);
-};
-function dataStorage() {
-  var retrievedData = localStorage.getItem('myData');
-    
-    var retrievedDataParsed = JSON.parse(retrievedData);};
-    
-  
-  dataStorage();
+
+  localStorage.setItem('viewData', JSON.stringify(viewData));
+  localStorage.setItem('clicks', JSON.stringify(clicks));
+  // var retrieveClick = localStorage.getItem('clicks');
+  // var clicksParse = JSON.parse(retrieveClick);
+  // var retrieveViews = localStorage.getItem('viewData');
+  // var viewsParse = JSON.parse(retrieveViews);
+  storage();
+}
+
+function storage () {
+  var retrieveClick = localStorage.getItem('clicks');
+  var clicksParse = JSON.parse(retrieveClick);
+  var retrieveViews = localStorage.getItem('viewData');
+  var viewsParse = JSON.parse(retrieveViews);
+
+  if (clicksParse === null) {
+    console.log('clicks', clicksParse);
+  }else {
+    clicks = clicksParse;
+    viewData = viewsParse;
+    drawChart();
+
+  }
+}
+storage();
+
+
+var viewData = [];
+
+
+
